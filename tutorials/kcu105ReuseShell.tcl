@@ -1,0 +1,12 @@
+open_checkpoint ./kcu105_route_shell.dcp
+report_route_status
+lock_design -level routing
+
+read_checkpoint -cell VexRiscvLitexSmpCluster_Cc4_Iw64Is8192Iy2_Dw64Ds8192Dy2_ITs4DTs4_Ldw512_Cdma_Ood/cores_1_cpu_logic_cpu ./riscv_1_synth.dcp
+
+# Degrade REQP-1753 from error to warning
+set_property SEVERITY {CRITICAL WARNING} [get_drc_checks REQP-1753]
+place_design
+route_design
+report_route_status
+report_timing
