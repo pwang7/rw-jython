@@ -1,0 +1,25 @@
+diff --git a/requirements.txt b/requirements.txt
+index 4aa4158..e229107 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -6,5 +6,5 @@ pkgconfig>=1.4.0
+ setuptools>=39.1.0
+ scipy>=1.1.0
+ numpy>=1.15.4
+-torch>=1.6.0
++torch>=1.6.0,<2.0.0
+ pycapnp
+diff --git a/test/FPGA-example1.json b/test/FPGA-example1.json
+index 3de129f..f46f162 100644
+--- a/test/FPGA-example1.json
++++ b/test/FPGA-example1.json
+@@ -1,7 +1,7 @@
+ {
+ "aux_input" : "benchmarks/sample_ispd2016_benchmarks/FPGA-example1/design.aux",
+-"gpu" : 1,
+-"num_threads" : 1,
++"gpu" : 0,
++"num_threads" : 16,
+ "num_bins_x" : 512,
+ "num_bins_y" : 512,
+ "global_place_stages" : [

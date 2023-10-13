@@ -42,9 +42,9 @@ if (len(sys.argv) < 3):
 
 perfTracker = CodePerfTracker(RWRoute.name, True)
 
-#Reads in a design checkpoint
+# Reads in a design checkpoint
 unroutedDesign = Design.readCheckpoint(sys.argv[1])
-#Routes design checkpoint
+# Routes design checkpoint
 startIdx = 3
 routeArgs = sys.argv[startIdx : ]
 print("routeArgs: ", routeArgs)

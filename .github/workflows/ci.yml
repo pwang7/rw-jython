@@ -19,6 +19,7 @@ jobs:
         run : |
           ./scripts/setup.sh
           ./scripts/run.sh
+          ./scripts/build.sh
       - name: Setup tmate session
         if: ${{ failure() }}
         uses: mxschmitt/action-tmate@v3

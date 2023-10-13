@@ -7,12 +7,12 @@ set -o xtrace
 java -cp ./rapidwright-2023.1.3-standalone-lin64.jar com.xilinx.rapidwright.util.Jython ./tutorials/basicCircuit.py
 java -cp ./rapidwright-2023.1.3-standalone-lin64.jar com.xilinx.rapidwright.util.Jython ./tutorials/netSizes.py
 java -cp ./rapidwright-2023.1.3-standalone-lin64.jar com.xilinx.rapidwright.util.Jython ./tutorials/numOfMemLUTs.py
-java -cp ./rapidwright-2023.1.3-standalone-lin64.jar com.xilinx.rapidwright.util.Jython ./tutorials/rwRoute.py ./checkpoints/gnl_2_4_7_3.0_gnl_3500_03_7_80_80.dcp ./checkpoints/gnl_2_4_7_3.0_gnl_3500_03_7_80_80_routed.dcp
+java -cp ./rapidwright-2023.1.3-standalone-lin64.jar com.xilinx.rapidwright.util.Jython ./tutorials/rwRoute.py ./checkpoints/gnl_2_4_7_3.0_gnl_3500_03_7_80_80.dcp ./checkpoints/gnl_2_4_7_3.0_gnl_3500_03_7_80_80_timing_driven_routed.dcp
 java -cp ./rapidwright-2023.1.3-standalone-lin64.jar com.xilinx.rapidwright.util.Jython ./tutorials/rwRoute.py ./checkpoints/gnl_2_4_7_3.0_gnl_3500_03_7_80_80.dcp ./checkpoints/gnl_2_4_7_3.0_gnl_3500_03_7_80_80_non_timing_routed.dcp --nonTimingDriven
 java -Xmx5g -cp ./rapidwright-2023.1.3-standalone-lin64.jar com.xilinx.rapidwright.util.Jython ./tutorials/partialRoute.py ./checkpoints/picoblaze_partial.dcp ./checkpoints/picoblaze_routed.dcp --nonTimingDriven
 java -cp ./rapidwright-2023.1.3-standalone-lin64.jar com.xilinx.rapidwright.util.Jython ./tutorials/reportTiming.py ./checkpoints/microblaze4.dcp
 
-unzip ./checkpoints/kcu105_example.zip
+unzip -o ./checkpoints/kcu105_example.zip
 # cd kcu105
 # vivado -source ../tutorials/kcu105CreateShell.tcl
 mkdir -p kcu105
@@ -20,6 +20,20 @@ mkdir -p kcu105
 cp ./checkpoints/kcu105_route.* ./kcu105
 java -cp ./rapidwright-2023.1.3-standalone-lin64.jar com.xilinx.rapidwright.util.Jython ./tutorials/makeBlackBox.py ./kcu105/kcu105_route.dcp ./kcu105/kcu105_route_shell.dcp VexRiscvLitexSmpCluster_Cc4_Iw64Is8192Iy2_Dw64Ds8192Dy2_ITs4DTs4_Ldw512_Cdma_Ood/cores_1_cpu_logic_cpu
 # vivado -source ../tutorials/kcu105ReuseShell.tcl
+
+java -Xmx5g -cp ./rapidwright-2023.1.3-standalone-lin64.jar com.xilinx.rapidwright.interchange.DeviceResourcesExample xc7z020clg400-2; #xcvu3p-ffvc1517-2-e
+# mkdir -p dev
+# mv *.device ./dev
+java -cp ./rapidwright-2023.1.3-standalone-lin64.jar com.xilinx.rapidwright.interchange.DcpToInterchange ./checkpoints/gnl_2_4_7_3.0_gnl_3500_03_7_80_80.dcp
+java -cp ./rapidwright-2023.1.3-standalone-lin64.jar com.xilinx.rapidwright.interchange.PhysicalNetlistToDcp ./dpf/gnl_2_4_3_1.3_gnl_3000_07_3_80_80.netlist ./dpf/gnl_2_4_3_1.3_gnl_3000_07_3_80_80.phys ./dpf/gnl_2_4_3_1.3_gnl_3000_07_3_80_80.xdc ./checkpoints/gnl_2_4_3_1.3_gnl_3000_07_3_80_80_placed.dcp --out_of_context
+java -cp ./rapidwright-2023.1.3-standalone-lin64.jar com.xilinx.rapidwright.interchange.PhysicalNetlistToDcp ./dpf/gnl_2_4_7_3.0_gnl_3500_03_7_80_80.netlist ./dpf/gnl_2_4_7_3.0_gnl_3500_03_7_80_80.phys ./dpf/gnl_2_4_7_3.0_gnl_3500_03_7_80_80.xdc ./checkpoints/gnl_2_4_7_3.0_gnl_3500_03_7_80_80_placed.dcp --out_of_context
+# vivado ./checkpoints/gnl_2_4_3_1.3_gnl_3000_07_3_80_80_placed.dcp
+# vivado ./checkpoints/gnl_2_4_7_3.0_gnl_3500_03_7_80_80_placed.dcp
+# rapidwright-2023.1.3 does not support RWRoute with the --outOfContext flag yet
+java -cp ./rapidwright-2023.1.3-standalone-lin64.jar com.xilinx.rapidwright.rwroute.RWRoute ./checkpoints/gnl_2_4_3_1.3_gnl_3000_07_3_80_80_placed.dcp ./checkpoints/gnl_2_4_3_1.3_gnl_3000_07_3_80_80_routed.dcp --nonTimingDriven; # --outOfContext
+java -cp ./rapidwright-2023.1.3-standalone-lin64.jar com.xilinx.rapidwright.util.Jython ./tutorials/rwRoute.py ./checkpoints/gnl_2_4_3_1.3_gnl_3000_07_3_80_80_placed.dcp ./checkpoints/gnl_2_4_3_1.3_gnl_3000_07_3_80_80_routed_alt.dcp --nonTimingDriven; # --outOfContext
+java -cp ./rapidwright-2023.1.3-standalone-lin64.jar com.xilinx.rapidwright.rwroute.RWRoute ./checkpoints/gnl_2_4_7_3.0_gnl_3500_03_7_80_80_placed.dcp ./checkpoints/gnl_2_4_7_3.0_gnl_3500_03_7_80_80_routed.dcp --nonTimingDriven; # --outOfContext
+java -cp ./rapidwright-2023.1.3-standalone-lin64.jar com.xilinx.rapidwright.util.Jython ./tutorials/rwRoute.py ./checkpoints/gnl_2_4_7_3.0_gnl_3500_03_7_80_80_placed.dcp ./checkpoints/gnl_2_4_7_3.0_gnl_3500_03_7_80_80_routed_alt.dcp --nonTimingDriven; # --outOfContext
 
 java -cp ./rapidwright-2023.1.3-standalone-lin64.jar com.xilinx.rapidwright.examples.SLRCrosserGenerator -w 720 -o ./checkpoints/slr_crosser_vu9p.dcp
 java -cp ./rapidwright-2023.1.3-standalone-lin64.jar com.xilinx.rapidwright.util.Jython ./tutorials/slrCrosserGenerator.py --width 720 -o ./checkpoints/slr_crosser_vu9p_alt.dcp
