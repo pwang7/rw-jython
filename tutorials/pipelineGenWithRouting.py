@@ -79,7 +79,8 @@ device = design.getDevice()
 
 perfTracker.stop().start("Create Pipeline")
 pipelineSlice = device.getSite(sliceName)
-PipelineGeneratorWithRouting.createPipeline(design, pipelineSlice, width, depth, distanceX, distanceY, direction, not opts.non_timing_route)
+shouldRoute = True
+PipelineGeneratorWithRouting.createPipeline(design, pipelineSlice, width, depth, distanceX, distanceY, direction, shouldRoute, not opts.non_timing_route)
 # print("opts.non_timing_route=%s" % opts.non_timing_route)
 routedDesign = RWRoute.routeDesignFullNonTimingDriven(design) if opts.non_timing_route else design
 

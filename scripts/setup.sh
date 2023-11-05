@@ -4,7 +4,7 @@ set -o errexit
 set -o nounset
 set -o xtrace
 
-VERSION="2023.1.3"
+VERSION="2023.1.4"
 RWJAR="./rapidwright-$VERSION-standalone-lin64.jar"
 
 if [ -f $RWJAR ]; then
