@@ -3,6 +3,8 @@ report_route_status
 lock_design -level routing
 
 read_checkpoint -cell VexRiscvLitexSmpCluster_Cc4_Iw64Is8192Iy2_Dw64Ds8192Dy2_ITs4DTs4_Ldw512_Cdma_Ood/cores_1_cpu_logic_cpu ./riscv_1_synth.dcp
+read_checkpoint -cell VexRiscvLitexSmpCluster_Cc4_Iw64Is8192Iy2_Dw64Ds8192Dy2_ITs4DTs4_Ldw512_Cdma_Ood/cores_2_cpu_logic_cpu ./riscv_2_synth.dcp
+read_checkpoint -cell VexRiscvLitexSmpCluster_Cc4_Iw64Is8192Iy2_Dw64Ds8192Dy2_ITs4DTs4_Ldw512_Cdma_Ood/cores_3_cpu_logic_cpu ./riscv_3_synth.dcp
 
 # Degrade REQP-1753 from error to warning
 set_property SEVERITY {CRITICAL WARNING} [get_drc_checks REQP-1753]

@@ -9,6 +9,7 @@ java -cp ./rapidwright-2023.1.4-standalone-lin64.jar com.xilinx.rapidwright.util
 java -cp ./rapidwright-2023.1.4-standalone-lin64.jar com.xilinx.rapidwright.examples.PolynomialGenerator 3*x^2+x-2 16
 java -cp ./rapidwright-2023.1.4-standalone-lin64.jar com.xilinx.rapidwright.examples.PolynomialGenerator 8*y^4+43*y*x^3+7*x^2-14 18 # --hand-placer
 # java -cp ./rapidwright-2023.1.4-standalone-lin64.jar com.xilinx.rapidwright.util.Jython ./tutorials/satRouter.py
+# java -cp ./rapidwright-2023.1.4-standalone-lin64.jar com.xilinx.rapidwright.examples.RunSATRouterExample ./checkpoints/reduce_or_routed_7overlaps.dcp SLICE_X108Y660:SLICE_X111Y664 ./checkpoints/reduce_or_sat_routed.dcp
 # java -cp ./rapidwright-2023.1.4-standalone-lin64.jar com.xilinx.rapidwright.util.Jython ./tutorials/probeRerouter.py
 
 java -cp ./rapidwright-2023.1.4-standalone-lin64.jar com.xilinx.rapidwright.util.Jython ./tutorials/basicCircuit.py
@@ -25,7 +26,12 @@ unzip -o ./checkpoints/kcu105_example.zip
 mkdir -p kcu105
 # Copy both kcu105_route.dcp and kcu105_route.edf
 cp ./checkpoints/kcu105_route.* ./kcu105
-java -cp ./rapidwright-2023.1.4-standalone-lin64.jar com.xilinx.rapidwright.util.Jython ./tutorials/makeBlackBox.py ./kcu105/kcu105_route.dcp ./kcu105/kcu105_route_shell.dcp VexRiscvLitexSmpCluster_Cc4_Iw64Is8192Iy2_Dw64Ds8192Dy2_ITs4DTs4_Ldw512_Cdma_Ood/cores_1_cpu_logic_cpu
+# java -cp ./rapidwright-2023.1.4-standalone-lin64.jar com.xilinx.rapidwright.util.Jython ./tutorials/makeBlackBox.py ./kcu105/kcu105_route.dcp ./kcu105/kcu105_route_shell.dcp VexRiscvLitexSmpCluster_Cc4_Iw64Is8192Iy2_Dw64Ds8192Dy2_ITs4DTs4_Ldw512_Cdma_Ood/cores_1_cpu_logic_cpu
+java -cp ./rapidwright-2023.1.4-standalone-lin64.jar com.xilinx.rapidwright.util.Jython ./tutorials/makeBlackBox.py \
+    ./kcu105/kcu105_route.dcp ./kcu105/kcu105_route_shell.dcp \
+    VexRiscvLitexSmpCluster_Cc4_Iw64Is8192Iy2_Dw64Ds8192Dy2_ITs4DTs4_Ldw512_Cdma_Ood/cores_3_cpu_logic_cpu \
+    VexRiscvLitexSmpCluster_Cc4_Iw64Is8192Iy2_Dw64Ds8192Dy2_ITs4DTs4_Ldw512_Cdma_Ood/cores_2_cpu_logic_cpu \
+    VexRiscvLitexSmpCluster_Cc4_Iw64Is8192Iy2_Dw64Ds8192Dy2_ITs4DTs4_Ldw512_Cdma_Ood/cores_1_cpu_logic_cpu
 # vivado -source ../tutorials/kcu105ReuseShell.tcl
 
 java -Xmx5g -cp ./rapidwright-2023.1.4-standalone-lin64.jar com.xilinx.rapidwright.interchange.DeviceResourcesExample xc7z020clg400-2; #xcvu3p-ffvc1517-2-e
@@ -81,8 +87,11 @@ java -cp ./rapidwright-2023.1.4-standalone-lin64.jar com.xilinx.rapidwright.util
 # vivado -mode gui -source ./tutorials/slrCrosserCheck.tcl
 
 cd eco
+# ./gradlew -Dmain=ProbeRouter :run
 ./gradlew -Dmain=EcoInsertRouteDebug :run
 ./gradlew -Dmain=EcoRelocateRouteDebug :run
 ./gradlew -Dmain=EcoInsertRouteMultiDebug :run
 ./gradlew -Dmain=EcoInsertRouteDebugApp :fatJar
 # vivado -mode gui -source ./src/eco_insert_route_debug.tcl
+# java -cp ./rapidwright-2023.1.4-standalone-lin64.jar com.xilinx.rapidwright.util.Jython ./tutorials/ecoInsertRouteDebug.py ./checkpoints/boom_medium_routed.dcp ./checkpoints/fifo36_routed.dcp ./checkpoints/boom_medium_debug.dcp
+# vivado -mode gui -source ./tutorials/ecoInsertRouteDebug.tcl
